@@ -1,3 +1,5 @@
+该分支已被舍弃，您可以随意修改该分支的C Drive Cleaner，这不会违反条例，我说的
+
 C Drive Cleaner
 
 一款轻量、完全离线、追求极致的 Windows C 盘空间清理工具，由 Batch 和 PowerShell 混合编写。
