@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>C Drive Cleaner neo</title>
+<style>.dot.dot-teal{background:#0c8a7b}</style>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ===== Custom title bar (Win11 style) ===== -->
+<div id="titlebar">
+  <div class="tb-left">
+    <div class="tb-icon">
+      <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#fff" d="M12 2l2.2 5.9L20 10l-5.8 2.1L12 18l-2.2-5.9L4 10l5.8-2.1L12 2zm7 12l1.1 2.9L23 18l-2.9 1.1L19 22l-1.1-2.9L15 18l2.9-1.1L19 14z"/></svg>
+    </div>
+    <span class="tb-title">C Drive Cleaner neo</span>
+    <span class="tb-ver" id="tb-ver">neo 1.0</span>
+  </div>
+  <div class="tb-buttons">
+    <button class="tb-btn" id="btn-min" title="最小化">
+      <svg width="10" height="10" viewBox="0 0 10 10"><path stroke="currentColor" stroke-width="1" d="M0 5h10"/></svg>
+    </button>
+    <button class="tb-btn" id="btn-max" title="最大化">
+      <svg width="10" height="10" viewBox="0 0 10 10"><rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor"/></svg>
+    </button>
+    <button class="tb-btn tb-close" id="btn-close" title="关闭">
+      <svg width="10" height="10" viewBox="0 0 10 10"><path stroke="currentColor" stroke-width="1" d="M0 0l10 10M10 0L0 10"/></svg>
+    </button>
+  </div>
+</div>
+
+<div id="shell">
+
+  <!-- ===== Navigation rail ===== -->
+  <nav id="nav">
+    <div class="nav-head">
+      <div class="nav-logo">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path fill="#fff" d="M12 2l2.2 5.9L20 10l-5.8 2.1L12 18l-2.2-5.9L4 10l5.8-2.1L12 2zm7 12l1.1 2.9L23 18l-2.9 1.1L19 22l-1.1-2.9L15 18l2.9-1.1L19 14z"/></svg>
+      </div>
+      <div class="nav-app">
+        <div class="nav-app-name">C Drive Cleaner neo</div>
+        <div class="nav-app-sub">Neo v1.0 by ALing</div>
+      </div>
+    </div>
+
+    <div class="nav-items">
+      <button class="nav-item active" data-page="home">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M3 11.5L12 4l9 7.5M5.5 9.8V20h13V9.8"/></svg>
+        <span data-i18n="nav.home">主页</span>
+      </button>
+      <button class="nav-item" data-page="quick">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M13 2L4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/></svg>
+        <span data-i18n="nav.quick">快速清理</span>
+      </button>
+      <button class="nav-item" data-page="advanced">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M4 7h16M4 12h16M4 17h16"/><circle cx="9" cy="7" r="2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="2" fill="currentColor" stroke="none"/><circle cx="7" cy="17" r="2" fill="currentColor" stroke="none"/></svg>
+        <span data-i18n="nav.adv">高级清理</span>
+      </button>
+      <button class="nav-item" data-page="disk">
+        <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 12V6.5M12 12l4 3"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>
+        <span data-i18n="nav.disk">磁盘空间</span>
+      </button>
+      <button class="nav-item" data-page="large">
+        <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path stroke="currentColor" stroke-width="1.8" d="M15.3 15.3L20.5 20.5"/></svg>
+        <span data-i18n="nav.large">大文件查找</span>
+      </button>
+      <button class="nav-item" data-page="settings">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="currentColor" stroke-width="1.6" d="M12 3.5l1.3 2.3 2.6-.6 1.2 2.4 2.5 1-.4 2.6 1.8 2-1.8 2 .4 2.6-2.5 1-1.2 2.4-2.6-.6L12 22l-1.3-2.3-2.6.6-1.2-2.4-2.5-1 .4-2.6-1.8-2 1.8-2-.4-2.6 2.5-1 1.2-2.4 2.6.6L12 3.5z"/><circle cx="12" cy="12.7" r="3" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        <span data-i18n="nav.settings">日志与设置</span>
+      </button>
+      <button class="nav-item" data-page="about">
+        <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path stroke="currentColor" stroke-width="1.8" d="M12 11v5.5"/><circle cx="12" cy="7.8" r="1.2" fill="currentColor" stroke="none"/></svg>
+        <span data-i18n="nav.about">关于</span>
+      </button>
+    </div>
+
+    <div class="nav-foot">
+      <div class="nav-user" id="nav-user" title="打开创作者主页">
+        <div class="nav-avatar">A</div>
+        <div class="nav-user-info">
+          <div class="nav-user-name">ALing Studio</div>
+          <div class="nav-user-sub" id="nav-mode">Windows</div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== Content ===== -->
+  <main id="content">
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <h1 class="page-title" data-i18n="home.title">主页</h1>
+
+      <div class="hero card">
+        <div class="hero-glow"></div>
+        <div class="hero-body">
+          <div class="hero-badge">C Drive Cleaner <span id="hero-ver">neo 1.0</span> · <span data-i18n="home.hero.badge">基于旧版打造的全新 neo 架构</span></div>
+          <h2 data-i18n="home.hero.h2">让 C 盘空间回到最佳状态</h2>
+          <p data-i18n="home.hero.p">轻量、完全离线。基于旧版打造的全新 neo 架构，原生高速引擎。</p>
+          <div class="hero-actions">
+            <button class="btn btn-accent btn-lg" id="home-quick-btn">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M13 2L4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/></svg>
+              <span data-i18n="home.btn.quick">一键快速清理</span>
+            </button>
+            <button class="btn btn-subtle btn-lg" id="home-adv-btn" data-i18n="home.btn.adv">自定义高级清理</button>
+          </div>
+        </div>
+        <div class="hero-art">
+          <svg viewBox="0 0 120 120" width="150" height="150">
+            <circle cx="60" cy="60" r="46" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="8"/>
+            <circle cx="60" cy="60" r="46" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-dasharray="200 290" transform="rotate(-90 60 60)" id="hero-ring"/>
+            <text x="60" y="57" text-anchor="middle" fill="#fff" font-size="17" font-weight="600" id="hero-ring-text">—</text>
+            <text x="60" y="74" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="9" data-i18n="hero.free">C 盘剩余</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="banner err hidden" id="home-temp-warn" style="margin-bottom:14px" data-i18n="home.tempwarn">检测到程序正从临时目录运行，建议移动到固定位置。</div>
+
+      <div class="grid-2">
+        <div class="card status-card">
+          <div class="status-row"><span class="dot" id="st-admin-dot"></span> <span data-i18n="home.admin">管理员权限</span> <b id="st-admin">检测中…</b></div>
+          <div class="status-row"><span class="dot dot-blue"></span> <span data-i18n="home.log">全局日志</span> <b id="st-log">—</b></div>
+          <div class="status-row"><span class="dot dot-teal"></span> <span data-i18n="home.cfree">C 盘剩余（启动自动检测）</span> <b id="st-cfree">检测中…</b></div>
+          <div class="status-row"><span class="dot dot-green"></span> SHA-256 <b id="st-sha" title="">…</b></div>
+        </div>
+        <div class="card">
+          <div class="card-title-sm" data-i18n="home.mode">运行模式</div>
+          <p class="muted" id="home-mode-desc">正在检测…</p>
+          <button class="btn btn-subtle btn-sm" id="home-console-btn" data-i18n="about.console">启动原版控制台 (bat)</button>
+        </div>
+      </div>
+
+      <h3 class="section-title" data-i18n="home.features">全部功能</h3>
+      <div class="feature-grid">
+        <button class="card feature" data-goto="quick">
+          <div class="f-icon f-blue"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M13 2L4.5 13.5H11L9.5 22 19 9.5h-6.5L13 2z"/></svg></div>
+          <div><div class="f-name" data-i18n="fq.n">一键快速清理</div><div class="f-desc" data-i18n="fq.d">自动清理 9 类常见垃圾，一键完成</div></div>
+          <span class="f-arrow">›</span>
+        </button>
+        <button class="card feature" data-goto="advanced">
+          <div class="f-icon f-violet"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="none" stroke="currentColor" stroke-width="1.8" d="M4 7h16M4 12h16M4 17h16"/></svg></div>
+          <div><div class="f-name" data-i18n="fa.n">高级自定义模式</div><div class="f-desc" data-i18n="fa.d">逐项选择 11 个清理项，危险项红色警示</div></div>
+          <span class="f-arrow">›</span>
+        </button>
+        <button class="card feature" data-goto="disk">
+          <div class="f-icon f-teal"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></div>
+          <div><div class="f-name" data-i18n="fd.n">磁盘空间查看</div><div class="f-desc" data-i18n="fd.d">输入盘符查看总容量 / 已用 / 剩余</div></div>
+          <span class="f-arrow">›</span>
+        </button>
+        <button class="card feature" data-goto="large">
+          <div class="f-icon f-orange"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path stroke="currentColor" stroke-width="2" d="M15.3 15.3L20.5 20.5"/></svg></div>
+          <div><div class="f-name" data-i18n="fl.n">大文件查找</div><div class="f-desc" data-i18n="fl.d">原生高速引擎多线程扫描，定位大体积文件</div></div>
+          <span class="f-arrow">›</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- QUICK CLEAN -->
+    <section class="page" id="page-quick">
+      <h1 class="page-title" data-i18n="quick.title">快速清理</h1>
+      <p class="page-sub" data-i18n="quick.sub">按固定顺序执行以下 9 项清理，全程自动。</p>
+
+      <div class="card run-card">
+        <div class="run-head">
+          <div>
+            <div class="card-title-sm" data-i18n="quick.card">一键快速清理</div>
+            <div class="muted" id="quick-status">就绪</div>
+          </div>
+          <div class="run-actions">
+            <button class="btn btn-accent" id="quick-start" data-i18n="common.start">开始</button>
+            <button class="btn btn-subtle hidden" id="quick-cancel" data-i18n="common.cancel">取消</button>
+          </div>
+        </div>
+        <ol class="steps" id="quick-steps"></ol>
+        <div class="banner hidden" id="quick-result"></div>
+        <div class="term-wrap">
+          <div class="term-title" data-i18n="term.title">执行输出</div>
+          <pre class="term" id="quick-term"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVANCED -->
+    <section class="page" id="page-advanced">
+      <h1 class="page-title" data-i18n="adv.title">高级清理</h1>
+      <p class="page-sub" data-i18n="adv.sub">逐项选择要清理的内容。</p>
+
+      <div class="card">
+        <div class="card-title-sm" data-i18n="adv.safe">常规项目（安全）</div>
+        <div class="toggle-list" id="adv-safe-list"></div>
+      </div>
+
+      <div class="card danger-card">
+        <div class="card-title-sm danger-title">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="#c42b1c" d="M12 2.5L23 21H1L12 2.5zm-1 7h2v5h-2v-5zm0 6.5h2v2h-2v-2z"/></svg>
+          <span data-i18n="adv.danger">危险操作区（可能影响系统恢复，请谨慎）</span>
+        </div>
+        <div class="toggle-list" id="adv-danger-list"></div>
+      </div>
+
+      <div class="card run-card">
+        <div class="run-head">
+          <div>
+            <div class="card-title-sm" data-i18n="adv.exec">执行</div>
+            <div class="muted"><span data-i18n="adv.selected">已选择</span> <b id="adv-count">0</b> <span data-i18n="adv.items">项</span></div>
+          </div>
+          <div class="run-actions">
+            <button class="btn btn-accent" id="adv-start" data-i18n="common.start">开始</button>
+            <button class="btn btn-subtle hidden" id="adv-cancel" data-i18n="common.cancel">取消</button>
+          </div>
+        </div>
+        <ol class="steps hidden" id="adv-steps"></ol>
+        <div class="banner hidden" id="adv-result"></div>
+        <div class="term-wrap">
+          <div class="term-title" data-i18n="term.title">执行输出</div>
+          <pre class="term" id="adv-term"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- DISK USAGE -->
+    <section class="page" id="page-disk">
+      <h1 class="page-title" data-i18n="disk.title">磁盘空间</h1>
+      <p class="page-sub" data-i18n="disk.sub">输入盘符查看总容量、已用空间和剩余空间。</p>
+
+      <div class="card">
+        <div class="input-row">
+          <input type="text" id="disk-input" class="win-input" maxlength="1" placeholder="C" autocomplete="off">
+          <span class="input-suffix">:</span>
+          <button class="btn btn-accent" id="disk-go" data-i18n="disk.query">查询</button>
+        </div>
+        <div class="field-error hidden" id="disk-error" data-i18n="disk.err">无效盘符。请输入 A 到 Z 的单个字母。</div>
+      </div>
+
+      <div class="card hidden" id="disk-result-card">
+        <div class="card-title-sm" id="disk-result-title">磁盘用量</div>
+        <div class="disk-stats">
+          <div class="disk-stat"><div class="ds-label" data-i18n="disk.total">总容量 Total</div><div class="ds-value" id="disk-total">—</div></div>
+          <div class="disk-stat"><div class="ds-label" data-i18n="disk.used">已用 Used</div><div class="ds-value" id="disk-used">—</div></div>
+          <div class="disk-stat"><div class="ds-label" data-i18n="disk.free">剩余 Free</div><div class="ds-value ds-free" id="disk-free">—</div></div>
+        </div>
+        <div class="usage-bar"><div class="usage-fill" id="disk-bar"></div></div>
+        <div class="muted usage-caption" id="disk-caption"></div>
+      </div>
+
+      <div class="card run-card">
+        <div class="term-wrap">
+          <div class="term-title" data-i18n="term.title">执行输出</div>
+          <pre class="term" id="disk-term"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- LARGE FILES -->
+    <section class="page" id="page-large">
+      <h1 class="page-title" data-i18n="large.title">大文件查找</h1>
+      <p class="page-sub" data-i18n="large.sub">高速多线程扫描 C 盘，最多显示前 20 个结果。</p>
+
+      <div class="card">
+        <div class="input-row">
+          <label class="input-label" data-i18n="large.label">最小文件大小 (GB)</label>
+          <input type="text" id="large-input" class="win-input wide" placeholder="1 / 2.5 / 0.5" autocomplete="off">
+          <button class="btn btn-accent" id="large-go" data-i18n="large.scan">开始扫描</button>
+          <button class="btn btn-subtle hidden" id="large-cancel" data-i18n="common.cancel">取消</button>
+        </div>
+        <div class="field-error hidden" id="large-error" data-i18n="large.err">无效输入。请输入数字。</div>
+        <div class="muted hint" data-i18n="large.hint">输入 0 将扫描所有文件（较慢）。扫描期间可随时取消。</div>
+      </div>
+
+      <!-- progress bar (neo fast scanner) -->
+      <div class="card hidden" id="large-progress-card">
+        <div class="progress-head">
+          <span class="progress-label" data-i18n="large.scanning">正在高速扫描…</span>
+          <span class="progress-pct" id="large-progress-pct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="large-progress-bar"></div></div>
+        <div class="muted progress-detail" id="large-progress-detail"></div>
+      </div>
+
+      <div class="card hidden" id="large-result-card">
+        <div class="run-head">
+          <div class="card-title-sm"><span data-i18n="large.result">扫描结果</span> <span class="chip" id="large-count">0</span></div>
+        </div>
+        <table class="result-table" id="large-table">
+          <thead><tr><th class="col-size" data-i18n="large.colsize">大小</th><th data-i18n="large.colpath">文件路径</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="card run-card">
+        <div class="term-wrap">
+          <div class="term-title" data-i18n="term.title">执行输出</div>
+          <pre class="term" id="large-term"></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS / LOGS -->
+    <section class="page" id="page-settings">
+      <h1 class="page-title" data-i18n="set.title">日志与设置</h1>
+      <p class="page-sub" data-i18n="set.sub">Logging &amp; Settings</p>
+
+      <div class="card">
+        <div class="setting-row">
+          <div class="setting-info">
+            <div class="setting-name" data-i18n="set.log.name">全局日志</div>
+            <div class="muted" data-i18n="set.log.desc">开启后所有清理操作将记录到 C:\Log\CleanLog.txt（占用空间极小）。</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="sw-log"><span class="slider"></span></label>
+        </div>
+        <div class="setting-row" style="margin-top:14px; border-top:1px solid #f0f0f0; padding-top:14px">
+          <div class="setting-info">
+            <div class="setting-name" data-i18n="set.lang.name">界面语言</div>
+            <div class="muted" data-i18n="set.lang.desc">支持 16 种语言，切换后立即生效。</div>
+          </div>
+          <select id="sel-lang" class="win-select"></select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title-sm" data-i18n="log.clean">清理日志 CleanLog</div>
+        <div class="btn-row">
+          <button class="btn btn-subtle btn-sm" id="log-refresh" data-i18n="log.refresh">刷新</button>
+          <button class="btn btn-subtle btn-sm" id="log-open-folder" data-i18n="log.open">打开日志目录</button>
+        </div>
+        <pre class="term log-viewer" id="clean-log-viewer">（尚未生成清理日志）</pre>
+      </div>
+
+      <div class="card">
+        <div class="card-title-sm" data-i18n="log.app">应用运行日志</div>
+        <div class="muted" id="app-log-path">…</div>
+        <div class="btn-row">
+          <button class="btn btn-subtle btn-sm" id="app-log-export" data-i18n="log.export">导出应用日志</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page" id="page-about">
+      <h1 class="page-title" data-i18n="about.title">关于</h1>
+
+      <div class="card about-hero">
+        <div class="about-logo">
+          <svg viewBox="0 0 24 24" width="30" height="30"><path fill="#fff" d="M12 2l2.2 5.9L20 10l-5.8 2.1L12 18l-2.2-5.9L4 10l5.8-2.1L12 2zm7 12l1.1 2.9L23 18l-2.9 1.1L19 22l-1.1-2.9L15 18l2.9-1.1L19 14z"/></svg>
+        </div>
+        <div>
+          <div class="about-name">C Drive Cleaner neo <span class="chip" id="about-guiver">neo 1.0</span></div>
+          <div class="muted">By ALing · MIT License · <span data-i18n="about.ver">版本</span> <span id="about-batver">v2.9</span> engine</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="about-rows">
+          <div class="about-row"><span data-i18n="about.bat">原版脚本</span><b id="about-batname">C Drive Cleaner v2.9.bat</b></div>
+          <div class="about-row"><span>SHA-256</span><b class="mono" id="about-sha">…</b></div>
+          <div class="about-row"><span data-i18n="about.plat">运行平台</span><b id="about-platform">…</b></div>
+          <div class="about-row"><span data-i18n="about.repo">原版仓库</span><a href="#" id="about-repo">github.com/ALingStudio/C-Drive-Cleaner</a></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title-sm" data-i18n="about.impl">实现说明</div>
+        <ul class="muted about-notes">
+          <li data-i18n="about.note1">清理命令逐字节取自原版脚本，未做任何修改；</li>
+          <li data-i18n="about.note2">大文件查找采用 neo 原生高速引擎，多线程并发扫描；</li>
+          <li data-i18n="about.note3">危险操作保留醒目警告；</li>
+          <li data-i18n="about.note4">如需原版体验，可点击下方按钮启动控制台版本。</li>
+        </ul>
+        <button class="btn btn-subtle btn-sm" id="about-console-btn" data-i18n="about.console">启动原版控制台 (bat)</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+<script src="i18n.js"></script>
+<script src="bridge.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
