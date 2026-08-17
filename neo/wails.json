@@ -1,0 +1,20 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "c-drive-cleaner-neo",
+  "outputfilename": "C-Drive-Cleaner-neo-1.0-Win64",
+  "frontend:dir": "frontend",
+  "frontend:install": "",
+  "frontend:build": "",
+  "frontend:dev:watcher": "",
+  "frontend:dev:serverUrl": "",
+  "author": {
+    "name": "ALing",
+    "email": "alingstudio@users.noreply.github.com"
+  },
+  "info": {
+    "productName": "C Drive Cleaner neo",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright © 2026 ALing",
+    "comments": "C Drive Cleaner neo - Win11 style GUI edition. Original v2.9 batch cleaning logic executed unmodified; large-file search reimplemented as a fast native scanner."
+  }
+}
