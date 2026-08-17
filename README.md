@@ -1,6 +1,6 @@
 该分支已被舍弃，您可以随意修改该分支的C Drive Cleaner，这不会违反条例，我说的
 
-https://github.com/ALingStudio/C-Drive-Cleaner-Neo 最新版本从此进
+[C Drive Cleaner Neo](https://github.com/ALingStudio/C-Drive-Cleaner-Neo)最新版本从此进
 
 C Drive Cleaner
 
